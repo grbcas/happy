@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
+from django_celery_beat.models import PeriodicTask
 
 NULLABLE = {'null': True, 'blank': True}
 
@@ -40,6 +41,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, verbose_name='email')
     birthday = models.DateTimeField(verbose_name='Birthday', **NULLABLE)
     friend = models.ForeignKey('User', on_delete=models.SET_NULL, **NULLABLE)
+    task = models.OneToOneField(PeriodicTask, on_delete=models.SET_NULL, **NULLABLE)
 
     def __str__(self):
         return f'{self.name}'
