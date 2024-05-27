@@ -1,3 +1,15 @@
-from django.shortcuts import render
+from rest_framework import serializers
+from users.models import User
 
-# Create your views here.
+
+class UserSerializer(serializers.ModelSerializer):
+
+    password = serializers.CharField(write_only=True, required=True)
+
+    class Meta:
+        model = User
+        fields = (
+            'pk',
+            'password',
+            'birthday',
+        )

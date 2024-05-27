@@ -33,6 +33,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'django_celery_beat',
+    'django_extensions',
 
     'users',
 ]
@@ -71,13 +72,23 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -141,6 +152,7 @@ SIMPLE_JWT = {
 }
 
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
 
 # Часовой пояс для работы Celery
@@ -154,10 +166,3 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 
 # Настройки для Celery
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-
-# CELERY_BEAT_SCHEDULE = {
-#     'task-name': {
-#         'task': 'myapp.tasks.my_task',  # Путь к задаче
-#         'schedule': timedelta(minutes=10),  # Расписание выполнения задачи (например, каждые 10 минут)
-#     },
-# }

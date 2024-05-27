@@ -9,12 +9,13 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         user, created = User.objects.get_or_create(
-            email='admin@admin.ru',
+            email='super@user.ru',
             is_superuser=True,
             is_active=True,
+            is_staff=True,
         )
         print(user, created)
         if created:
             user.set_password(os.getenv('ADMIN_PASSWORD'))
             user.save()
-            return f'admin {user.email} was created'
+            return f'admin user: "{user.email}" was created {os.getenv("ADMIN_PASSWORD")}'
