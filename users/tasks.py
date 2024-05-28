@@ -26,7 +26,8 @@ def task_notify():
         friends = User.objects.values_list('friend', flat=True).filter(pk=user.pk)
         print(friends)
         for friend in friends:
-            print('friend>>>', friend)
+            print(user.name, 'friend>>>', friend)
             if friend:
                 friend_email = User.objects.values_list('email', flat=True).filter(pk=friend)
-                mailing.delay(user.name, friend_email)
+                print('friend_email>>>> ', friend_email[0])
+                mailing.delay(user.name, friend_email[0])

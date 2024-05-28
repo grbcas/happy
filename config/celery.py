@@ -13,7 +13,7 @@ app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
     'task_notify-everyday': {
-        'task': 'tasks.task_notify',
+        'task': 'users.tasks.task_notify',
         'schedule': crontab(),
     },
 }
