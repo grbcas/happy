@@ -11,7 +11,7 @@
 
 1. Клонируйте репозиторий:
    ```
-   git clone git@github.com:grbcas/happy_birthday.git
+   git clone git@github.com:grbcas/happy.git
    ```
 2. Перейдите в директорию проекта:
    ```
@@ -78,9 +78,4 @@ http://localhost:8000/
 Для удобства тестирования можете перейти по адресу:
 ```
 http://localhost:8000/admin/
-```
-## Документация API
-
-```
-**URL:** http://127.0.0.1:8000/swagger/
 ```
