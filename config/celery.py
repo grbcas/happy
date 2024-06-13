@@ -1,8 +1,7 @@
 from __future__ import absolute_import
-import os
 from celery import Celery
-import time
 from celery.schedules import crontab
+import os
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
@@ -14,14 +13,9 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'task_notify-everyday': {
         'task': 'users.tasks.task_notify',
-        'schedule': crontab(),
+        'schedule': crontab(minute=0, hour=0),
+        # 'schedule': crontab(),
     },
 }
 
 app.conf.timezone = 'UTC'
-
-
-@app.task()
-def debug_task():
-    print(f'running.....debug_task')
-    time.sleep(5)

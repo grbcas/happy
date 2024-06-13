@@ -1,0 +1,28 @@
+{% extends 'users/base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 order-md-1">
+        <h5 class="mb-3 text-center">Пользователи</h5>
+
+        <div class="container mt-5">
+
+            {% for object in object_list %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h4 class="card-title">{{ object.email }}</h4>
+                    <p class="card-text">Имя: {{ object.name }}</p>
+
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+    <body>
+      {{user}} authentication:
+      {{user.is_authenticated}}
+
+    </body>
+{% endblock %}

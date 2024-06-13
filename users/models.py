@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
-import datetime
 
 NULLABLE = {'null': True, 'blank': True}
 
@@ -42,8 +41,12 @@ class User(AbstractUser):
     birthday = models.DateField(verbose_name='Birthday', **NULLABLE)
     friend = models.ManyToManyField('User', verbose_name='Friends', blank=True)
 
+    def display_friends(self):
+        friends_list = User.objects.values_list('friend', flat=True).filter(pk=self.pk)
+        return ', '.join([str(x) for x in friends_list])
+
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.email}'
 
     objects = UserManager()
 

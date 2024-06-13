@@ -1,0 +1,35 @@
+{% load static %}
+<html lang="en">
+<head>
+    <title>{{ title }}</title>
+</head>
+
+<body>
+
+<header>
+    <div class="bg-dark" id="navbarHeader">
+        <div class="container">
+            <div class="row">
+            {% include 'users/includes/inc_main_menu.html' %}
+            </div>
+        </div>
+</header>
+
+<main role="main">
+
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+
+            <div class="row">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+</main>
+
+
+</body>
+</html>

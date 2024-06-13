@@ -45,10 +45,10 @@ services:
     depends_on:
       - postgres_db
 
-  worker:
+  beat:
     build: .
     tty: true
-    hostname: worker
+    hostname: beat
     entrypoint: celery
     command: -A config beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
     links:
