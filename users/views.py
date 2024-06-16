@@ -39,11 +39,36 @@ class UserCreateAPIView(CreateAPIView):
         return user
 
 
+class LoginAPIView(TokenObtainPairView):
+    """Authentication with token"""
+    def post(self, request: Request, *args, **kwargs) -> Response:
+        serializer = self.get_serializer(data=request.data)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except TokenError as e:
+            raise InvalidToken(e.args[0])
+
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
+
+
 class UserRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
     serializer_class = UserSerializer
     permission_classes = [IsOwner]
     queryset = User.objects.all()
+
+    def patch(self, request, *args, **kwargs):
+        pk = self.kwargs.get('pk')
+        user = User.objects.get(pk=pk)
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(
+            data=serializer.data,
+            status=status.HTTP_200_OK
+        )
 
 
 class UserProfile(ListAPIView):
@@ -60,20 +85,3 @@ class UserProfile(ListAPIView):
         data = {'friends_emails': ', '.join(friends_emails)}
         print(data)
         return Response(data=friends_emails, status=200)
-
-
-class LoginView(TokenObtainPairView):
-    """Authentication via token"""
-    def post(self, request: Request, *args, **kwargs) -> Response:
-        """add private key at the first login"""
-        serializer = self.get_serializer(data=request.data)
-
-        try:
-            serializer.is_valid(raise_exception=True)
-            email = request.data.get('email')
-            user = User.objects.get(email=email)
-            user.add_own_invite_key()
-        except TokenError as e:
-            raise InvalidToken(e.args[0])
-
-        return Response(serializer.validated_data, status=status.HTTP_200_OK)
